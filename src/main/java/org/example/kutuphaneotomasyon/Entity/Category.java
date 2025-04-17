@@ -1,0 +1,33 @@
+package org.example.kutuphaneotomasyon.Entity;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+import org.hibernate.annotations.Where;
+
+import java.util.List;
+
+@Getter
+@Setter
+@Entity
+@Where(clause="deleted=false")
+public class Category {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column
+    private Integer id;
+    private String name;
+    private boolean deleted=false;
+
+    @JsonIgnore
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "category_book",
+            joinColumns = @JoinColumn(name = "book_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "category_id", referencedColumnName = "id"))
+    private List<Book> bookList;
+
+    /*@OneToMany(mappedBy = "category")
+    private List<Book> books;*/
+}
