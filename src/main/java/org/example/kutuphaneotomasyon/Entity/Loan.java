@@ -7,6 +7,7 @@ import lombok.Setter;
 import org.hibernate.annotations.Where;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -21,7 +22,7 @@ public class Loan {
     public LocalDate borrowDate;
     public LocalDate dueDate;
     public LocalDate returnDate;
-    private boolean deleted=false;
+    private boolean deleted = false;
 
     @JsonIgnore
     @ManyToOne(cascade = CascadeType.ALL)
@@ -31,12 +32,10 @@ public class Loan {
             inverseJoinColumns = @JoinColumn(name = "borrow_id", referencedColumnName = "id"))
     private Book borrowedBook;
 
-    @JsonIgnore
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinTable(
             name = "borrow_user",
-            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "borrow_id", referencedColumnName = "id"))
-    private List<User> UserList;
-
+            joinColumns = @JoinColumn(name = "borrow_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id"))
+    private User user;
 }

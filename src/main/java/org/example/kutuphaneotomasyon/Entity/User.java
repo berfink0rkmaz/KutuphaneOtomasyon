@@ -8,6 +8,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -76,7 +77,7 @@ public class User implements UserDetails {
 
     private boolean deleted=false;
 
-    @OneToMany(mappedBy = "user")
-    private List<Loan> loans;
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
+    private List<Loan> loans=new ArrayList<>();
 
 }
