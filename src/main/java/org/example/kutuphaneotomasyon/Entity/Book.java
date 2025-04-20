@@ -1,21 +1,54 @@
 package org.example.kutuphaneotomasyon.Entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import lombok.Getter;
-import lombok.Setter;
-import org.hibernate.annotations.Where;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+import java.util.List;
+
+@Data
 @Entity
-@Getter
-@Setter
-@Where(clause="deleted=false")
+@NoArgsConstructor
+@AllArgsConstructor
+@Table(name="book")
 public class Book {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="id")
     private Integer id;
 
+    @Column(name="isbn", nullable=false, unique=true)
+    private String isbn;
+
+    @Column(name="ad", nullable=false)
+    private String ad;
+
+    @Column(name="baski_yili")
+    private int baskiYili;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name="durum")
+    private Durum durum;
+
+    @Column(name="kapak_fotosu_url")
+    private String kitapKapakfotosuUrl;
+    @Column(name = "dil")
+    private String dil;
+
+    @ManyToOne
+    @JoinColumn(name = "yazar_id")
+    private Author author;
+
+    @ManyToOne
+    @JoinColumn(name = "yayinci_id")
+    private Publisher publisher;
+
+    @ManyToOne
+    @JoinColumn(name = "kategori_id")
+    private Category category;
+
+    @OneToMany(mappedBy = "book")
+    private List<Loan> loans;
 }

@@ -1,12 +1,12 @@
 package org.example.kutuphaneotomasyon.Service;
+import org.example.kutuphaneotomasyon.Dto.LoanDto;
 import org.example.kutuphaneotomasyon.Entity.Loan;
 import org.example.kutuphaneotomasyon.ResponseMessage.GenericResponse;
 
 public interface LoanService {
-    GenericResponse<?> BorrowBook();
-    /*Kitap Ödünç Ver (POST) -> Kullanıcıya kitap ödünç verilir
- Kitap İade Et (PUT) -> Kullanıcı kitabı iade eder
- Ödünç İşlemlerini Listele (GET) -> Kullanıcının ödünç aldığı tüm kitapları listeler
- Kitap Ödünç Durumunu Getir (GET) -> Belirtilen kitabın ödünç durumunu döndürür
-*/
+    GenericResponse<?> saveLoan(LoanDto loanDto);
+    GenericResponse<?> getAllLoans();
+    GenericResponse<?> getLoanById(Integer id);
+    GenericResponse<?> deleteLoanById(Integer id);
+    GenericResponse<?> updateLoan(Integer id, LoanDto updatedLoan);
 }
