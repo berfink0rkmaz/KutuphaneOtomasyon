@@ -7,11 +7,13 @@ import java.util.List;
 
 public interface UserService {
      List<User> allUsers();
-    /*GenericResponse<?>saveUser(User user);
-    GenericResponse<?>updateUser(User user);
-    GenericResponse<?>deleteUser(Integer id);
-    GenericResponse<?>getAllUsers();
-    GenericResponse<?> findById(Integer id);
+     GenericResponse<?> deleteUser(Integer id);
+     GenericResponse<?> updateUser(User user);
+     GenericResponse<?> findById(Integer id) ;
+
+
+    /*
+    GenericResponse<?>getAllUsers(); güncelle list user ı
    // GenericResponse<?> updatePassword(String email);*/
 
 }
