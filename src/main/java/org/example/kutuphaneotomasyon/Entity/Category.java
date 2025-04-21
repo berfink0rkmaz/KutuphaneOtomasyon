@@ -17,7 +17,7 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
     private Integer id;
-    private String name;
+    private String ad;
     private boolean deleted=false;
 
     @JsonIgnore
