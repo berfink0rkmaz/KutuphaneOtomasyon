@@ -3,10 +3,8 @@ package org.example.kutuphaneotomasyon.Service.Impl;
 
 import org.example.kutuphaneotomasyon.Dto.DtoBook;
 import org.example.kutuphaneotomasyon.Dto.DtoBookIU;
-import org.example.kutuphaneotomasyon.Entity.Author;
-import org.example.kutuphaneotomasyon.Entity.Book;
-import org.example.kutuphaneotomasyon.Entity.Category;
-import org.example.kutuphaneotomasyon.Entity.Publisher;
+import org.example.kutuphaneotomasyon.Dto.DtoSystemStatus;
+import org.example.kutuphaneotomasyon.Entity.*;
 import org.example.kutuphaneotomasyon.Mapper.BookMapperIU;
 import org.example.kutuphaneotomasyon.Mapper.BookMapperView;
 import org.example.kutuphaneotomasyon.Repository.AuthorRepository;
@@ -206,4 +204,15 @@ public class BookServiceImpl implements IBookService {
 
         return GenericResponse.success(dtoList);
     }
+
+    @Override
+    public GenericResponse<?> getSystemStatus() {
+        long toplam = bookRepository.count();
+        long musait = bookRepository.countByDurum(Durum.MUSAIT);
+        long odunc = bookRepository.countByDurum(Durum.ODUNC_VERILDI);
+
+        DtoSystemStatus dto = new DtoSystemStatus(toplam, musait, odunc);
+        return GenericResponse.success(dto);
+    }
+
 }

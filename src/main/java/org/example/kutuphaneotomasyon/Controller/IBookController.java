@@ -13,6 +13,7 @@ public interface IBookController {
 
     GenericResponse<?> findById(Integer id);
     GenericResponse<?> searchBooksByName(String keyword);
+    GenericResponse<?> getSystemStatus();
 
 
 

@@ -11,6 +11,7 @@ public interface IBookService {
 
     GenericResponse<?> findById(Integer id);
     GenericResponse<?> searchBooksByName(String keyword);
+    public GenericResponse<?> getSystemStatus();
 
 
 

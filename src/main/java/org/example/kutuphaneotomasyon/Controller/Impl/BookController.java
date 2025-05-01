@@ -57,6 +57,11 @@ public class BookController implements IBookController {
     public GenericResponse<?> searchBooksByName(@RequestParam String keyword) {
         return bookService.searchBooksByName(keyword);
     }
+    @GetMapping("/system/status")
+    public GenericResponse<?> getSystemStatus() {
+        return bookService.getSystemStatus();
+    }
+
 
 
 }
