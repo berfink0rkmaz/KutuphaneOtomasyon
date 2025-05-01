@@ -15,27 +15,27 @@ public class LoanController {
     @Autowired
     private LoanService loanService;
 
-    @PostMapping
+    @PostMapping("/save")
     public GenericResponse<?> saveLoan(@RequestBody LoanDto dtoLoan) {
         return loanService.saveLoan(dtoLoan);
     }
 
-    @GetMapping
+    @GetMapping("/getAll")
     public GenericResponse<?> getAllLoans() {
         return loanService.getAllLoans();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/getLoan/{id}")
     public GenericResponse<?> getLoanById(@PathVariable Integer id) {
         return loanService.getLoanById(id);
     }
 
-    @DeleteMapping("/{id}")
-    public GenericResponse<?> deleteLoan(@PathVariable Integer id) {
+    @DeleteMapping("/delete/{id}")
+    public GenericResponse<?> deleteLoanById(@PathVariable Integer id) {
         return loanService.deleteLoanById(id);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/update")
     public GenericResponse<?> updateLoan(@PathVariable Integer id, @RequestBody LoanDto dtoLoan) {
         return loanService.updateLoan(id, dtoLoan);
     }
