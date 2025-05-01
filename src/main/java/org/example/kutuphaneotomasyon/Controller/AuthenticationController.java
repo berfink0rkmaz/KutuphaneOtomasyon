@@ -11,7 +11,7 @@ import org.example.kutuphaneotomasyon.Service.AuthenticationService;
 import org.example.kutuphaneotomasyon.Service.JwtService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
+@CrossOrigin
 @RequestMapping("/auth")
 @RestController
 public class AuthenticationController {
