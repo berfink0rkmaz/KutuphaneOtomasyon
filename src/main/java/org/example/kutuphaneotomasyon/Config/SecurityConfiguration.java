@@ -48,7 +48,8 @@ public class SecurityConfiguration {
                                 "/webjars/**",
                                 "/auth/**",
                                 "/users/**",
-                                "/rest/api/**"
+                                "/rest/api/**",
+                                "/images/**"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )
