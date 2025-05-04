@@ -1,7 +1,6 @@
 package org.example.kutuphaneotomasyon.Service.Impl;
 
 import jakarta.transaction.Transactional;
-import org.example.kutuphaneotomasyon.Entity.Book;
 import org.example.kutuphaneotomasyon.Entity.User;
 import org.example.kutuphaneotomasyon.Repository.UserRepository;
 import org.example.kutuphaneotomasyon.ResponseMessage.Constants;
