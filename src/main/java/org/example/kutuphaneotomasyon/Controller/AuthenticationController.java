@@ -2,9 +2,7 @@ package org.example.kutuphaneotomasyon.Controller;
 
 
 
-import org.example.kutuphaneotomasyon.Dto.LoginUserDto;
-import org.example.kutuphaneotomasyon.Dto.RegisterUserDto;
-import org.example.kutuphaneotomasyon.Dto.VerifyUserDto;
+import org.example.kutuphaneotomasyon.Dto.*;
 import org.example.kutuphaneotomasyon.Entity.User;
 import org.example.kutuphaneotomasyon.ResponseMessage.LoginResponse;
 import org.example.kutuphaneotomasyon.Service.AuthenticationService;
@@ -56,5 +54,17 @@ public class AuthenticationController {
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
+    }
+
+    @PostMapping("/forgot-password")
+    public ResponseEntity<?> sendResetCode(@RequestBody ForgotPasswordDto dto) {
+        authenticationService.sendForgotPasswordCode(dto.getEmail());
+        return ResponseEntity.ok("Verification code sent");
+    }
+
+    @PostMapping("/reset-password")
+    public ResponseEntity<?> resetPassword(@RequestBody ResetPasswordDto dto) {
+        authenticationService.resetPassword(dto);
+        return ResponseEntity.ok("Password updated successfully");
     }
 }

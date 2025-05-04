@@ -4,6 +4,7 @@ package org.example.kutuphaneotomasyon.Service;
 import jakarta.mail.MessagingException;
 import org.example.kutuphaneotomasyon.Dto.LoginUserDto;
 import org.example.kutuphaneotomasyon.Dto.RegisterUserDto;
+import org.example.kutuphaneotomasyon.Dto.ResetPasswordDto;
 import org.example.kutuphaneotomasyon.Dto.VerifyUserDto;
 import org.example.kutuphaneotomasyon.Entity.User;
 import org.example.kutuphaneotomasyon.Repository.UserRepository;
@@ -126,5 +127,52 @@ public class AuthenticationService {
         Random random = new Random();
         int code = random.nextInt(900000) + 100000;
         return String.valueOf(code);
+    }
+   // @Override
+   public void sendForgotPasswordCode(String email) {
+       User user = userRepository.findByEmail(email)
+               .orElseThrow(() -> new RuntimeException("Email not found"));
+
+       String code = generateVerificationCode();
+       user.setVerificationCode(code);
+       user.setVerificationCodeExpiresAt(LocalDateTime.now().plusMinutes(10));
+       userRepository.save(user);
+
+       String subject = "Şifre Sıfırlama Kodu";
+       String htmlMessage = "<html>"
+               + "<body style=\"font-family: Arial, sans-serif;\">"
+               + "<div style=\"background-color: #f5f5f5; padding: 20px;\">"
+               + "<h2 style=\"color: #333;\">Şifre Sıfırlama İsteği</h2>"
+               + "<p style=\"font-size: 16px;\">Aşağıdaki kod ile şifrenizi yenileyebilirsiniz:</p>"
+               + "<div style=\"background-color: #fff; padding: 20px; border-radius: 5px; "
+               + "box-shadow: 0 0 10px rgba(0,0,0,0.1);\">"
+               + "<h3 style=\"color: #333;\">Kod:</h3>"
+               + "<p style=\"font-size: 18px; font-weight: bold; color: #007bff;\">" + code + "</p>"
+               + "</div>"
+               + "</div>"
+               + "</body>"
+               + "</html>";
+
+       try {
+           emailService.sendVerificationEmail(user.getEmail(), subject, htmlMessage);
+       } catch (MessagingException e) {
+           e.printStackTrace();
+           throw new RuntimeException("Mail gönderilemedi!");
+       }
+   }
+    //@Override
+    public void resetPassword(ResetPasswordDto dto) {
+        User user = userRepository.findByEmail(dto.getEmail())
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        if (!dto.getVerificationCode().equals(user.getVerificationCode()) ||
+                user.getVerificationCodeExpiresAt().isBefore(LocalDateTime.now())) {
+            throw new RuntimeException("Invalid or expired code");
+        }
+
+        user.setPassword(passwordEncoder.encode(dto.getNewPassword()));
+        user.setVerificationCode(null); // sıfırla
+        user.setVerificationCodeExpiresAt(null);
+        userRepository.save(user);
     }
 }
