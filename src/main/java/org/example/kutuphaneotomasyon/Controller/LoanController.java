@@ -4,6 +4,7 @@ import org.example.kutuphaneotomasyon.Dto.LoanDtoIU;
 import org.example.kutuphaneotomasyon.ResponseMessage.GenericResponse;
 import org.example.kutuphaneotomasyon.Service.LoanService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -13,6 +14,7 @@ public class LoanController {
     @Autowired
     private LoanService loanService;
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'LIBRARIAN')")
     @PostMapping("/save")
     public GenericResponse<?> saveLoan(@RequestBody LoanDtoIU dtoLoan) {
         return loanService.saveLoan(dtoLoan);

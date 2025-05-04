@@ -4,6 +4,7 @@ import jakarta.transaction.Transactional;
 import org.example.kutuphaneotomasyon.Dto.LoanDto;
 import org.example.kutuphaneotomasyon.Dto.LoanDtoIU;
 import org.example.kutuphaneotomasyon.Entity.Book;
+import org.example.kutuphaneotomasyon.Entity.Durum;
 import org.example.kutuphaneotomasyon.Entity.Loan;
 import org.example.kutuphaneotomasyon.Entity.User;
 import org.example.kutuphaneotomasyon.Mapper.LoanMapper;
@@ -34,23 +35,28 @@ public class LoanServiceImpl implements LoanService {
         @Autowired
         private LoanMapper loanMapper;
 
-        @Override
-        public GenericResponse<?> saveLoan(LoanDtoIU loanDtoIU) {
-            User user = userRepository.findById(loanDtoIU.getUserId()).orElse(null);
-            Book book = bookRepository.findById(loanDtoIU.getBookId()).orElse(null);
+    @Override
+    public GenericResponse<?> saveLoan(LoanDtoIU loanDtoIU) {
+        User user = userRepository.findById(loanDtoIU.getUserId()).orElse(null);
+        Book book = bookRepository.findById(loanDtoIU.getBookId()).orElse(null);
 
-            if (user == null) {
-                return GenericResponse.error(Constants.EMPTY_USER);
-            }
-
-            if (book == null) {
-                return GenericResponse.error(Constants.EMPTY_BOOK);
-            }
-
-            Loan loan = loanMapper.dtoToLoan(loanDtoIU, user, book);
-            Loan saved = loanRepository.save(loan);
-            return GenericResponse.success(loanMapper.loanToDto(saved));
+        if (user == null) {
+            return GenericResponse.error(Constants.EMPTY_USER);
         }
+        if (book == null) {
+            return GenericResponse.error(Constants.EMPTY_BOOK);
+        }
+        if (book.getDurum() != Durum.MUSAIT) {
+            return GenericResponse.error("Kitap şu an uygun değil: " + book.getDurum().name());
+        }
+        // Kitabı ödünç ver → durumunu güncelle
+        book.setDurum(Durum.ODUNC_VERILDI);
+        bookRepository.save(book);
+
+        Loan loan = loanMapper.dtoToLoan(loanDtoIU, user, book);
+        Loan saved = loanRepository.save(loan);
+        return GenericResponse.success(loanMapper.loanToDto(saved));
+    }
 
         @Override
         public GenericResponse<?> getAllLoans() {
