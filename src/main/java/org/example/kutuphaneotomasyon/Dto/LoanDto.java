@@ -3,6 +3,7 @@ package org.example.kutuphaneotomasyon.Dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.example.kutuphaneotomasyon.Entity.Durum;
 
 import java.time.LocalDate;
 
@@ -15,6 +16,8 @@ public class LoanDto {
 
     private Integer userId;
     private Integer bookId;
+
+    private Durum durum;
 
     private LocalDate borrowDate;
     private LocalDate returnDate;

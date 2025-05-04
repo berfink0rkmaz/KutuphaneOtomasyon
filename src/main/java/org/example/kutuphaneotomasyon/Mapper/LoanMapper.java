@@ -30,6 +30,7 @@ public class LoanMapper {
         dto.setBorrowDate(loan.getBorrowDate());
         dto.setReturnDate(loan.getReturnDate());
         dto.setReturned(loan.isReturned());
+        dto.setDurum(loan.getBook().getDurum());
 
         if (loan.getUser() != null) {
             dto.setUserId(loan.getUser().getId());

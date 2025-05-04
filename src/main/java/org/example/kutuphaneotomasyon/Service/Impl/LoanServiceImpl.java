@@ -1,7 +1,6 @@
 package org.example.kutuphaneotomasyon.Service.Impl;
 
 import jakarta.transaction.Transactional;
-import org.example.kutuphaneotomasyon.Dto.LoanDto;
 import org.example.kutuphaneotomasyon.Dto.LoanDtoIU;
 import org.example.kutuphaneotomasyon.Entity.Book;
 import org.example.kutuphaneotomasyon.Entity.Durum;
