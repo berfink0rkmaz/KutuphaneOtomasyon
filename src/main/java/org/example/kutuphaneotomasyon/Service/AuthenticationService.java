@@ -8,12 +8,16 @@ import org.example.kutuphaneotomasyon.Dto.VerifyUserDto;
 import org.example.kutuphaneotomasyon.Entity.User;
 import org.example.kutuphaneotomasyon.Repository.UserRepository;
 import org.example.kutuphaneotomasyon.Service.Impl.EmailService;
+import org.example.kutuphaneotomasyon.Service.JwtService;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.example.kutuphaneotomasyon.ResponseMessage.LoginResponse;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Random;
 
@@ -23,17 +27,23 @@ public class AuthenticationService {
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
     private final EmailService emailService;
+    private final JwtService jwtService; // ✅ EKLENDİ
+
 
     public AuthenticationService(
             UserRepository userRepository,
             AuthenticationManager authenticationManager,
             PasswordEncoder passwordEncoder,
-            EmailService emailService
+            EmailService emailService,
+             JwtService jwtService
     ) {
         this.authenticationManager = authenticationManager;
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.emailService = emailService;
+        this.jwtService = jwtService;
+
+
     }
 
     public User signup(RegisterUserDto input) {
@@ -46,13 +56,16 @@ public class AuthenticationService {
         return userRepository.save(user);
     }
 
-    public User authenticate(LoginUserDto input) {
+
+
+    public LoginResponse authenticate(LoginUserDto input) {
         User user = userRepository.findByEmail(input.getEmail())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         if (!user.isEnabled()) {
             throw new RuntimeException("Account not verified. Please verify your account.");
         }
+
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         input.getEmail(),
@@ -60,8 +73,16 @@ public class AuthenticationService {
                 )
         );
 
-        return user;
+        // 🔥 Token'a role bilgisi ekleniyor
+        Map<String, Object> extraClaims = new HashMap<>();
+        extraClaims.put("role", user.getRole().name()); // Örn: ADMIN, STUDENT
+
+        String token = jwtService.generateToken(extraClaims, user);
+
+        // ✨ LoginResponse objesi döndürülüyor
+        return new LoginResponse(token, jwtService.getExpirationTime());
     }
+
 
     public void verifyUser(VerifyUserDto input) {
         Optional<User> optionalUser = userRepository.findByEmail(input.getEmail());

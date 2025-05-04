@@ -48,9 +48,8 @@ public class SecurityConfiguration {
                                 "/auth/**",
                                 "/users/**",
                                 "/rest/api/**",
-"/images/**"
-
-
+"/images/**",
+"/error"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )

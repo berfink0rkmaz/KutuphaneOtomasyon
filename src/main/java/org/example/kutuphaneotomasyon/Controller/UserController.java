@@ -38,6 +38,8 @@ public class UserController {
 
     @GetMapping("/")
     public ResponseEntity<List<UserDto>> allUsers() {
+        System.out.println("allusers called");
+
         return ResponseEntity.ok(userService.allUsers());
     }
 
