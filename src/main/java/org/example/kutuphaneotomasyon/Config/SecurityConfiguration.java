@@ -2,7 +2,6 @@ package org.example.kutuphaneotomasyon.Config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -31,12 +30,12 @@ public class SecurityConfiguration {
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
     }
 
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .cors(withDefaults()) //Cors için
                 .csrf(csrf -> csrf.disable())
-
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
                                 "/swagger-ui.html",
@@ -48,8 +47,7 @@ public class SecurityConfiguration {
                                 "/webjars/**",
                                 "/auth/**",
                                 "/users/**",
-                                "/rest/api/**",
-                                "/images/**"
+                                "/rest/api/**"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )
@@ -61,7 +59,6 @@ public class SecurityConfiguration {
 
         return http.build();
     }
-
 
 
     @Bean

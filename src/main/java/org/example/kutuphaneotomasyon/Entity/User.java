@@ -69,6 +69,11 @@ public class User implements UserDetails {
         return enabled;
     }
 
+   /* @Override
+    public String getUsername() {
+        return this.email; // token'da e-posta yer alır
+    }*/
+
     @Enumerated(EnumType.STRING)
     private Role role;
     public enum Role {

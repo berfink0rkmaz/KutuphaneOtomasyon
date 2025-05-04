@@ -1,12 +1,10 @@
 package org.example.kutuphaneotomasyon.Controller;
 
-import org.example.kutuphaneotomasyon.Dto.LoanDto;
+import org.example.kutuphaneotomasyon.Dto.LoanDtoIU;
 import org.example.kutuphaneotomasyon.ResponseMessage.GenericResponse;
 import org.example.kutuphaneotomasyon.Service.LoanService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/loans")
@@ -16,7 +14,7 @@ public class LoanController {
     private LoanService loanService;
 
     @PostMapping("/save")
-    public GenericResponse<?> saveLoan(@RequestBody LoanDto dtoLoan) {
+    public GenericResponse<?> saveLoan(@RequestBody LoanDtoIU dtoLoan) {
         return loanService.saveLoan(dtoLoan);
     }
 
@@ -35,8 +33,8 @@ public class LoanController {
         return loanService.deleteLoanById(id);
     }
 
-    @PutMapping("/update")
-    public GenericResponse<?> updateLoan(@PathVariable Integer id, @RequestBody LoanDto dtoLoan) {
+    @PutMapping("/update/{id}")
+    public GenericResponse<?> updateLoan(@PathVariable Integer id, @RequestBody LoanDtoIU dtoLoan) {
         return loanService.updateLoan(id, dtoLoan);
     }
 }
