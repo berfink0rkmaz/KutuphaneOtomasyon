@@ -81,28 +81,32 @@ public class LoanServiceImpl implements LoanService {
             return GenericResponse.success("Deleted successfully");
         }
 
-        @Override
-        public GenericResponse<?> updateLoan(Integer id, LoanDtoIU updatedLoan) {
-            Optional<Loan> optionalLoan = loanRepository.findById(id);
-            if (optionalLoan.isEmpty()) {
-                return GenericResponse.error("Loan not found!");
-            }
-
-            User user = userRepository.findById(updatedLoan.getUserId()).orElse(null);
-            Book book = bookRepository.findById(updatedLoan.getBookId()).orElse(null);
-
-            if (user == null || book == null) {
-                return GenericResponse.error("User or Book not found!");
-            }
-
-            Loan loan = optionalLoan.get();
-            loan.setBorrowDate(updatedLoan.getBorrowDate());
-            loan.setReturnDate(updatedLoan.getReturnDate());
-            loan.setReturned(updatedLoan.isReturned());
-            loan.setUser(user);
-            loan.setBook(book);
-
-            Loan updated = loanRepository.save(loan);
-            return GenericResponse.success(loanMapper.loanToDto(updated));
+    @Override
+    public GenericResponse<?> updateLoan(Integer id, LoanDtoIU updatedLoan) {
+        Optional<Loan> optionalLoan = loanRepository.findById(id);
+        if (optionalLoan.isEmpty()) {
+            return GenericResponse.error("Loan not found!");
         }
+
+        User user = userRepository.findById(updatedLoan.getUserId()).orElse(null);
+        Book book = bookRepository.findById(updatedLoan.getBookId()).orElse(null);
+
+        if (user == null) return GenericResponse.error("User not found!");
+        if (book == null) return GenericResponse.error("Book not found!");
+
+        Loan loan = optionalLoan.get();
+        loan.setBorrowDate(updatedLoan.getBorrowDate());
+        loan.setReturnDate(updatedLoan.getReturnDate());
+        loan.setReturned(updatedLoan.isReturned());
+        loan.setUser(user);
+        loan.setBook(book);
+
+        if (updatedLoan.isReturned()) {
+            book.setDurum(Durum.MUSAIT);
+            bookRepository.save(book);
+        }
+
+        Loan updated = loanRepository.save(loan);
+        return GenericResponse.success(loanMapper.loanToDto(updated));
+    }
     }
