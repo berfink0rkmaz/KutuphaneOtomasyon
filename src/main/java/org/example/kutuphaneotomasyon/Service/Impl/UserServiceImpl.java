@@ -1,6 +1,7 @@
 package org.example.kutuphaneotomasyon.Service.Impl;
 
 import jakarta.transaction.Transactional;
+import org.example.kutuphaneotomasyon.Entity.Book;
 import org.example.kutuphaneotomasyon.Entity.User;
 import org.example.kutuphaneotomasyon.Repository.UserRepository;
 import org.example.kutuphaneotomasyon.ResponseMessage.Constants;
@@ -60,6 +61,13 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findUserById(id);
         if(user==null) {return GenericResponse.error(Constants.EMPTY_ID);}
         else{return GenericResponse.success(user);}
+    }
+    @Override
+    public GenericResponse<?> searchByUserName(String keyword){
+        System.out.println("searchByUsername called");
+        List<User> foundUsers = userRepository.searchByUsername(keyword);
+        return GenericResponse.success(foundUsers);
+
     }
 
 }

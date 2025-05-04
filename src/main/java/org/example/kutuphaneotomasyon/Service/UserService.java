@@ -10,7 +10,7 @@ public interface UserService {
      GenericResponse<?> deleteUser(Integer id);
      GenericResponse<?> updateUser(User user);
      GenericResponse<?> findById(Integer id) ;
-
+     GenericResponse<?> searchByUserName(String keyword);
 
     /*
     GenericResponse<?>getAllUsers(); güncelle list user ı
