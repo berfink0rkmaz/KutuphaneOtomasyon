@@ -19,7 +19,6 @@ public class Loan {
     public LocalDate returnDate;
     private boolean isReturned;
     private boolean deleted = false;
-
     @ManyToOne
     @JoinColumn(name = "book_id")
     private Book book;

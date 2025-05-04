@@ -17,6 +17,8 @@ public class LoanController {
     @PreAuthorize("hasAnyRole('ADMIN', 'LIBRARIAN')")
     @PostMapping("/save")
     public GenericResponse<?> saveLoan(@RequestBody LoanDtoIU dtoLoan) {
+
+        System.out.println("💥 LoanController'a geldik!");
         return loanService.saveLoan(dtoLoan);
     }
 

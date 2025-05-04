@@ -33,11 +33,12 @@ public class LoanServiceImpl implements LoanService {
 
         @Autowired
         private LoanMapper loanMapper;
-
+    @Transactional
     @Override
     public GenericResponse<?> saveLoan(LoanDtoIU loanDtoIU) {
         User user = userRepository.findById(loanDtoIU.getUserId()).orElse(null);
         Book book = bookRepository.findById(loanDtoIU.getBookId()).orElse(null);
+        System.out.println(loanDtoIU.getBookId());
 
         if (user == null) {
             return GenericResponse.error(Constants.EMPTY_USER);
@@ -50,7 +51,10 @@ public class LoanServiceImpl implements LoanService {
         }
         // Kitabı ödünç ver → durumunu güncelle
         book.setDurum(Durum.ODUNC_VERILDI);
+        System.out.println("Kitap durumu set edildi: " + book.getDurum());
+
         bookRepository.save(book);
+
 
         Loan loan = loanMapper.dtoToLoan(loanDtoIU, user, book);
         Loan saved = loanRepository.save(loan);
