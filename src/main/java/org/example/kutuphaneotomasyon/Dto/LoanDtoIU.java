@@ -5,7 +5,11 @@ import lombok.*;
 
 import java.time.LocalDate;
 
-@Data
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Schema(description = "Ödünç alma kaydı oluşturmak veya güncellemek için DTO")

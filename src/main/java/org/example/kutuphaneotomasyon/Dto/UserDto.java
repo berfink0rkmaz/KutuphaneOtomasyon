@@ -5,8 +5,12 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.example.kutuphaneotomasyon.Entity.User.Role;
 
-    @Data
-    @NoArgsConstructor
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
+@NoArgsConstructor
     @AllArgsConstructor
     public class UserDto {
         private Integer id;

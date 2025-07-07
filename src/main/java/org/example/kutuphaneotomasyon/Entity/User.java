@@ -70,10 +70,14 @@ public class User implements UserDetails {
         return enabled;
     }
 
-   /* @Override
+    @Override
     public String getUsername() {
         return this.email; // token'da e-posta yer alır
-    }*/
+    }
+    @Override
+    public String getPassword() {
+        return this.password;
+    }
 
     @Enumerated(EnumType.STRING)
     private Role role;

@@ -1,4 +1,5 @@
 package org.example.kutuphaneotomasyon.Service;
+import java.security.SecureRandom;
 
 
 import jakarta.mail.MessagingException;
@@ -145,8 +146,8 @@ public class AuthenticationService {
         }
     }
     private String generateVerificationCode() {
-        Random random = new Random();
-        int code = random.nextInt(900000) + 100000;
+        SecureRandom secureRandom = new SecureRandom();
+        int code = secureRandom.nextInt(900000) + 100000; // 6 haneli
         return String.valueOf(code);
     }
    // @Override

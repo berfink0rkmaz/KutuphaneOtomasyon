@@ -7,7 +7,11 @@ import org.example.kutuphaneotomasyon.Entity.Durum;
 
 import java.time.LocalDate;
 
-@Data
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class LoanDto {
