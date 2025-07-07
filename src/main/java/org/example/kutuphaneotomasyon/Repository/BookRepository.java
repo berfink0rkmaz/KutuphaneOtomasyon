@@ -18,6 +18,8 @@ public interface BookRepository extends JpaRepository<Book, Integer> {
     @Query(value = "SELECT * FROM book WHERE ad ILIKE %:keyword%", nativeQuery = true)
     List<Book> searchByName(@Param("keyword") String keyword);
     long countByDurum(Durum durum);
+    @Query(value = "SELECT * FROM books WHERE id = ':id'", nativeQuery = true)
+    Book findBookWithRawSql(@Param("id") String id);
 
 
 

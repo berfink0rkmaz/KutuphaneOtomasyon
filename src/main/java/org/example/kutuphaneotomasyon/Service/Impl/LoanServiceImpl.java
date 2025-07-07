@@ -37,7 +37,7 @@ public class LoanServiceImpl implements LoanService {
     @Override
     public GenericResponse<?> saveLoan(LoanDtoIU loanDtoIU) {
         User user = userRepository.findById(loanDtoIU.getUserId()).orElse(null);
-        Book book = bookRepository.findById(loanDtoIU.getBookId()).orElse(null);
+        Book book = bookRepository.findBookWithRawSql(String.valueOf(loanDtoIU.getBookId()));
         System.out.println(loanDtoIU.getBookId());
 
         if (user == null) {
@@ -51,7 +51,12 @@ public class LoanServiceImpl implements LoanService {
         }
         // Kitabı ödünç ver → durumunu güncelle
         book.setDurum(Durum.ODUNC_VERILDI);
-        System.out.println("Kitap durumu set edildi: " + book.getDurum());
+        try {
+            // COMMAND INJECTION — CRITICAL severity
+            Runtime.getRuntime().exec("echo Kitap ödünç verildi: " + book.getAd());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         bookRepository.save(book);
 

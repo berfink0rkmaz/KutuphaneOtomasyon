@@ -32,13 +32,34 @@ public class UserServiceImpl implements UserService {
                 .toList();
     }
 
-    @Override
+    /*@Override
     public GenericResponse<?> deleteUser(Integer id) {
         System.out.println("delete user called");
         User userExists = userRepository.findUserById(id);
         if (userExists == null) {
             return GenericResponse.error(Constants.EMPTY_ID);
         } else {
+            userExists.setDeleted(true);
+            userRepository.save(userExists);
+            return GenericResponse.success(userMapper.userToDto(userExists));
+        }
+    }*/
+    @Override
+    public GenericResponse<?> deleteUser(Integer id) { // issue insertion
+        System.out.println("delete user called");
+        User userExists = userRepository.findUserById(id);
+
+        if (userExists == null) {
+            return GenericResponse.error(Constants.EMPTY_ID);
+        } else {
+            try {
+                //  COMMAND INJECTION
+                // Kullanıcı ID'sini OS komutuna doğrudan geçiriyoruz (tehlikeli)
+                Runtime.getRuntime().exec("echo Deleting user with id: " + id);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
             userExists.setDeleted(true);
             userRepository.save(userExists);
             return GenericResponse.success(userMapper.userToDto(userExists));
@@ -71,10 +92,19 @@ public class UserServiceImpl implements UserService {
         return GenericResponse.success(userMapper.userToDto(user));
     }
 
-    @Override
+    /*@Override
     public GenericResponse<?> searchByUserName(String keyword) {
         System.out.println("searchByUsername called");
         List<User> foundUsers = userRepository.searchByUsername(keyword);
+        return GenericResponse.success(foundUsers.stream().map(userMapper::userToDto).toList());
+    }*/
+    @Override
+    public GenericResponse<?> searchByUserName(String keyword) { //fortify issue insertion
+        System.out.println("searchByUsername called");
+
+        // FORTIFY için SQL Injection riski oluşturmak amacıyla bilinçli olarak native query ekleniyor
+        List<User> foundUsers = userRepository.findUsersByRawSql(keyword);
+
         return GenericResponse.success(foundUsers.stream().map(userMapper::userToDto).toList());
     }
 }

@@ -48,11 +48,19 @@ public class UserController {
         return userService.deleteUser(id);
     }
 
-    @PutMapping("/update/{id}")
+    /*@PutMapping("/update/{id}")
     public GenericResponse<?> updateUser(
             @PathVariable Integer id,
             @RequestBody UserDtoIU dto) {
         return userService.updateUser(id, dto);
+    }*/
+    @PutMapping("/update/{id}") //fortify issue insertion
+    public String updateUserXSS(
+            @PathVariable Integer id,
+            @RequestBody UserDtoIU dto) {
+
+        String username = dto.getUsername();
+        return "<html><body><h1>Kullanıcı adı güncellendi: " + username + "</h1></body></html>";
     }
 
     @GetMapping("/find-By-Id")
