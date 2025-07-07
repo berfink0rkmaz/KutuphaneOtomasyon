@@ -56,7 +56,7 @@ public class JwtService {
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + expiration))
-                .signWith(getSignInKey()) // ← sadece key veriyoruz
+                .signWith(getSignInKey()) //  sadece key veriyoruz
                 .compact();
     }
 
@@ -85,5 +85,14 @@ public class JwtService {
     private SecretKey getSignInKey() {
         byte[] keyBytes = Decoders.BASE64.decode(secretKey);
         return Keys.hmacShaKeyFor(keyBytes);
+    }
+    public String generateInsecureToken(String username) { //Fortify Issue Insertion — HIGH Severity: Hardcoded Secret Key
+        String hardcodedSecret = "berfinin-super-gizli-anahtari-123";
+        return Jwts.builder()
+                .setSubject(username)
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + 86400000)) // 1 gün geçerli
+                .signWith(SignatureAlgorithm.HS256, hardcodedSecret)
+                .compact();
     }
 }

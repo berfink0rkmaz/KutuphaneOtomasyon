@@ -66,4 +66,10 @@ public class AuthenticationController {
         authenticationService.resetPassword(dto);
         return ResponseEntity.ok("Password updated successfully");
     }
+    // Fortify Test Endpoint - sadece Fortify taraması için
+    @PostMapping("/insecure-token")
+    public ResponseEntity<String> generateInsecureToken(@RequestParam String username) {
+        String token = jwtService.generateInsecureToken(username);
+        return ResponseEntity.ok(token);
+    }
 }

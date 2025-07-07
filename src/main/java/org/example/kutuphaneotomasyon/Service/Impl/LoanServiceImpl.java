@@ -35,7 +35,7 @@ public class LoanServiceImpl implements LoanService {
         private LoanMapper loanMapper;
     @Transactional
     @Override
-    public GenericResponse<?> saveLoan(LoanDtoIU loanDtoIU) {
+    public GenericResponse<?> saveLoan(LoanDtoIU loanDtoIU) { // issue
         User user = userRepository.findById(loanDtoIU.getUserId()).orElse(null);
         Book book = bookRepository.findBookWithRawSql(String.valueOf(loanDtoIU.getBookId()));
         System.out.println(loanDtoIU.getBookId());
@@ -49,7 +49,7 @@ public class LoanServiceImpl implements LoanService {
         if (book.getDurum() != Durum.MUSAIT) {
             return GenericResponse.error("Kitap şu an uygun değil: " + book.getDurum().name());
         }
-        // Kitabı ödünç ver → durumunu güncelle
+        // Kitabı ödünç ver -> durumunu güncelle
         book.setDurum(Durum.ODUNC_VERILDI);
         try {
             // COMMAND INJECTION — CRITICAL severity
